@@ -33,11 +33,13 @@ namespace MagicVilla_VillaAPI.Controllers
         public async Task<ActionResult<APIResponse>> GetVillaNumbers()
         {
             try
-            {       
-            IEnumerable<VillaNumber> villaNumberList = await _dbVillaNumber.GetAllAsync();
+            {   
+                
+            IEnumerable<VillaNumber> villaNumberList = await _dbVillaNumber.GetAllAsync(includeProperties: "Villa");
             _response.Result = _mapper.Map<List<VillaNumberDTO>>(villaNumberList);
             _response.StatusCode = HttpStatusCode.OK;
             return Ok(_response); //convert to VillaDTO using mapping
+
             }
             catch (Exception ex)
             {
@@ -49,7 +51,7 @@ namespace MagicVilla_VillaAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetVillaNumber")] //this HttpGet expects an id parameter
-        [ProducesResponseType(StatusCodes.Status200OK)] //Repsonse Types
+        [ProducesResponseType(StatusCodes.Status200OK)] //Response Types
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> GetVillaNumber(int id)
@@ -109,7 +111,7 @@ namespace MagicVilla_VillaAPI.Controllers
                 VillaNumber villaNumber = _mapper.Map<VillaNumber>(createDTO);
 
                 await _dbVillaNumber.CreateAsync(villaNumber);
-                _response.Result = _mapper.Map<VillaDTO>(villaNumber);
+                _response.Result = _mapper.Map<VillaNumberDTO>(villaNumber);
                 _response.StatusCode = HttpStatusCode.Created;
                 return CreatedAtRoute("GetVilla", new { id = villaNumber.VillaNo }, _response);
             }

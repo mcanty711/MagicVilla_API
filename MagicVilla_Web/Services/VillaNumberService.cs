@@ -16,6 +16,7 @@ namespace MagicVilla_Web.Services
             _clientFactory = clientFactory;
             villaUrl = configuration.GetValue<string>("ServiceUrls:VillaAPI");
         }
+
         public Task<T> CreateAsync<T>(VillaNumberCreateDTO dto)
         {
             return SendAsync<T>(new APIRequest()
@@ -60,7 +61,7 @@ namespace MagicVilla_Web.Services
                 ApiType = SD.ApiType.PUT,
                 Data = dto,
                 Url = villaUrl + "/api/villaNumberAPI/" + dto.VillaNo
-            }); 
+            });
         }
     }
 }
